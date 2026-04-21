@@ -288,9 +288,42 @@
       .panel-desc, .panel-cta { opacity: 1; transform: none; }
       .corner-label { opacity: 0.5; }
     }
+
+    /* ── SLIDESHOW ── */
+    .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .slideshow img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+
+    .slideshow img.active {
+      opacity: 0.1;
+    }
   </style>
 </head>
 <body>
+
+<div class="slideshow">
+  <img src="photos/photo1.jpeg" alt="Photo 1">
+  <img src="photos/photo2.jpeg" alt="Photo 2">
+  <img src="photos/photo3.jpeg" alt="Photo 3">
+  <img src="photos/photo4.jpeg" alt="Photo 4">
+</div>
 
 <div class="split">
 
@@ -333,6 +366,27 @@
   </a>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const images = document.querySelectorAll('.slideshow img');
+  let currentIndex = 0;
+
+  function showNextImage() {
+    images[currentIndex].classList.remove('active');
+    currentIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].classList.add('active');
+  }
+
+  // Start with first image
+  if (images.length > 0) {
+    images[0].classList.add('active');
+  }
+
+  // Change every 8 seconds
+  setInterval(showNextImage, 8000);
+});
+</script>
 
 </body>
 </html>
