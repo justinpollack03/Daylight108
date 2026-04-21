@@ -39,20 +39,20 @@
           {
             "heading": "Original Creations",
             "items": [
-              { "name": "The 108 Sour",          "desc": "Bourbon, fresh lemon, honey syrup, egg white, Angostura float", "note": "house fave" },
-              { "name": "Sunlit Garden",          "desc": "Gin, elderflower, cucumber, fresh lime, prosecco" },
-              { "name": "Daylight Old Fashioned", "desc": "Rye whiskey, smoked maple, orange bitters, expressed peel" },
-              { "name": "Apartment Negroni",      "desc": "Campari, sweet vermouth, gin, orange twist" }
+              { "name": "The 108 Sour",          "desc": "Bourbon, fresh lemon, honey syrup, egg white, Angostura float", "note": "house fave", "recipe": "2oz Bulleit Bourbon, 0.75oz fresh lemon juice, 0.5oz honey syrup, 1 egg white, Angostura bitters. Dry shake, then shake with ice. Strain into coupe. Float bitters on foam." },
+              { "name": "Sunlit Garden",          "desc": "Gin, elderflower, cucumber, fresh lime, prosecco", "recipe": "1.5oz Hendrick's Gin, 0.5oz Elderflower Liqueur, 3 cucumber slices, 0.75oz fresh lime juice, 2oz Prosecco. Muddle cucumber lightly, add gin and liqueur with ice, strain into wine glass, top with Prosecco. Cucumber garnish." },
+              { "name": "Daylight Old Fashioned", "desc": "Rye whiskey, smoked maple, orange bitters, expressed peel", "recipe": "2oz Rittenhouse Rye, 0.5oz smoked maple syrup, 2 dashes orange bitters, 2 dashes Angostura bitters. Stir with ice, strain into rocks glass over large ice cube. Express orange peel over drink, place as garnish." },
+              { "name": "Apartment Negroni",      "desc": "Campari, sweet vermouth, gin, orange twist", "recipe": "1oz Hendrick's Gin, 1oz Campari, 1oz sweet vermouth. Stir with ice, strain into rocks glass over large ice cube. Orange twist garnish." }
             ]
           },
           {
             "heading": "Classics, Our Way",
             "items": [
-              { "name": "Daiquiri",         "desc": "White rum, fresh lime, cane sugar — shaken hard" },
-              { "name": "Paloma",           "desc": "Tequila blanco, grapefruit, lime, honey, sparkling water, salt rim" },
-              { "name": "Dark & Stormy",    "desc": "Dark rum, ginger beer, lime, Angostura" },
-              { "name": "Aperol Spritz",    "desc": "Aperol, prosecco, soda, orange wheel" },
-              { "name": "Espresso Martini", "desc": "Vodka, fresh-pulled espresso, coffee liqueur, sugar", "note": "coffee + cocktail" }
+              { "name": "Daiquiri",         "desc": "White rum, fresh lime, cane sugar — shaken hard", "recipe": "2oz Plantation 3 Stars, 1oz fresh lime juice, 0.75oz simple syrup. Shake hard with ice, strain into coupe. Lime wheel garnish." },
+              { "name": "Paloma",           "desc": "Tequila blanco, grapefruit, lime, honey, sparkling water, salt rim", "recipe": "1.5oz Espolon Blanco, 1oz fresh grapefruit juice, 0.5oz fresh lime juice, 0.5oz honey syrup, 1oz sparkling water, salt rim. Shake first 4 ingredients with ice, strain into rocks glass over ice, top with sparkling water." },
+              { "name": "Dark & Stormy",    "desc": "Dark rum, ginger beer, lime, Angostura", "recipe": "2oz Gosling's Black Seal, 4-6oz spicy ginger beer, 0.5oz fresh lime juice, 2 dashes Angostura bitters. Build in highball glass over ice, top with ginger beer. Lime wheel." },
+              { "name": "Aperol Spritz",    "desc": "Aperol, prosecco, soda, orange wheel", "recipe": "1.5oz Aperol, 3oz Prosecco, 1oz soda water. Build in wine glass over ice. Orange wheel garnish." },
+              { "name": "Espresso Martini", "desc": "Vodka, fresh-pulled espresso, coffee liqueur, sugar", "note": "coffee + cocktail", "recipe": "1.5oz Grey Goose Vodka, 1oz fresh-pulled espresso, 0.5oz coffee liqueur, 0.25oz simple syrup. Shake hard with ice, strain into coupe. Coffee bean garnish." }
             ]
           }
         ]
@@ -65,7 +65,7 @@
           {
             "heading": "Beer",
             "items": [
-              { "name": "Seasonal Lager", "desc": "Ask your host what's cold tonight" },
+              { "name": "Seasonal Lager", "desc": "Ask Camden what's cold tonight" },
               { "name": "IPA",            "desc": "Rotating selection — ask what's in the fridge" },
               { "name": "Non-Alcoholic",  "desc": "Athletic Brewing Run Wild IPA", "note": "NA" }
             ]
@@ -73,8 +73,8 @@
           {
             "heading": "Wine",
             "items": [
-              { "name": "House White",  "desc": "Selection rotates with the season — ask your host" },
-              { "name": "House Red",    "desc": "Selection rotates with the season — ask your host" },
+              { "name": "House White",  "desc": "Selection rotates with the season — ask Camden" },
+              { "name": "House Red",    "desc": "Selection rotates with the season — ask Camden" },
               { "name": "Sparkling",    "desc": "Prosecco or Cava — ask what's chilled" }
             ]
           }
@@ -340,11 +340,55 @@
 
     .menu-item {
       display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: baseline;
-      gap: 1rem;
-      padding: 1.1rem 0;
-      border-bottom: 1px solid var(--rule);
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      padding: 1rem;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      margin-bottom: 0.75rem;
+      transition: background 0.2s, border-color 0.2s;
+      position: relative;
+    }
+
+    .menu-item:hover {
+      background: rgba(184,148,58,0.05);
+      border-color: rgba(184,148,58,0.3);
+    }
+
+    .menu-item.has-recipe {
+      cursor: pointer;
+    }
+
+    .menu-item.has-recipe::after {
+      content: '▾';
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 0.9rem;
+      color: var(--gold);
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item.has-recipe.expanded::after {
+      transform: rotate(180deg);
+    }
+
+    .recipe {
+      display: none;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--rule);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+      line-height: 1.6;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .menu-item.expanded .recipe {
+      display: block;
+      opacity: 1;
     }
 
     .menu-item:first-child { border-top: 1px solid var(--rule); }
@@ -359,6 +403,7 @@
       align-items: center;
       gap: 0.6rem;
       flex-wrap: wrap;
+      padding-right: 1.5rem;
     }
 
     .item-desc {
@@ -512,7 +557,7 @@
 
   const sectionNotes = {
     cocktails:  'All cocktails prepared to order. Non-alcoholic variations available for most recipes — just ask.',
-    provisions: 'Provisions subject to availability. Your host is happy to accommodate requests.'
+    provisions: 'Provisions subject to availability. Camden is happy to accommodate requests.'
   };
 
   // Nav
@@ -570,13 +615,22 @@
         cat.items.forEach(item => {
           const row = document.createElement('div');
           row.className = 'menu-item';
+          if (item.recipe) row.classList.add('has-recipe');
           const badge = item.note  ? `<span class="item-badge">${item.note}</span>` : '';
           const price = item.price ? `<p class="item-price">${item.price}</p>` : '';
+          const recipe = item.recipe ? `<div class="recipe">${item.recipe}</div>` : '';
           row.innerHTML = `
             <div>
               <p class="item-name">${item.name}${badge}</p>
               <p class="item-desc">${item.desc}</p>
+              ${recipe}
             </div>${price}`;
+          if (item.recipe) {
+            row.addEventListener('click', (e) => {
+              e.stopPropagation();
+              row.classList.toggle('expanded');
+            });
+          }
           grid.appendChild(row);
         });
         sec.appendChild(grid);

@@ -30,6 +30,35 @@
       grid-template-columns: 1fr 1fr;
       height: 100vh;
       position: relative;
+      z-index: 1;
+    }
+
+    /* ── SLIDESHOW ── */
+    .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .slideshow img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .slideshow img.active {
+      opacity: 0.08;
     }
 
     .panel {
@@ -82,7 +111,7 @@
 
     /* ── BAR PANEL ── */
     .panel-bar {
-      background-color: #F8F4ED;
+      background-color: #556B2E;
     }
 
     .panel-bar::before {
@@ -289,31 +318,7 @@
       .corner-label { opacity: 0.5; }
     }
 
-    /* ── SLIDESHOW ── */
-    .slideshow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
 
-    .slideshow img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 2s ease-in-out;
-    }
-
-    .slideshow img.active {
-      opacity: 0.1;
-    }
   </style>
 </head>
 <body>
@@ -368,24 +373,24 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
   const images = document.querySelectorAll('.slideshow img');
   let currentIndex = 0;
 
-  function showNextImage() {
+  function rotatePhoto() {
     images[currentIndex].classList.remove('active');
     currentIndex = (currentIndex + 1) % images.length;
     images[currentIndex].classList.add('active');
   }
 
-  // Start with first image
+  // Start with first image visible
   if (images.length > 0) {
     images[0].classList.add('active');
   }
 
-  // Change every 8 seconds
-  setInterval(showNextImage, 8000);
-});
+  // Rotate every 8 seconds
+  setInterval(rotatePhoto, 8000);
+})();
 </script>
 
 </body>
