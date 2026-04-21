@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bar — Daylight 108</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+    BAR MENU DATA — Edit this block to update the menu.
+
+    Each section has:
+      "id"         — navigation anchor (no spaces)
+      "label"      — small eyebrow text
+      "title"      — section heading
+      "spiritCards"— true for compact spirit card grid layout
+      "categories" — groups of items
+
+    Each item:
+      "name"  — item name (required)
+      "desc"  — description or proof for spirits (required)
+      "note"  — optional badge label
+      "price" — optional price string
+
+    HOW TO EDIT:
+      Add item    → copy a { } block, paste, edit fields
+      Remove item → delete the { } block and adjacent comma
+      Add category→ copy a { "heading":..., "items":[...] } block
+      Add section → copy a full section object in "sections"
+  ============================================================ -->
+  <script type="application/json" id="bar-data">
+  {
+    "sections": [
+      {
+        "id": "cocktails",
+        "label": "Handcrafted",
+        "title": "Cocktails",
+        "categories": [
+          {
+            "heading": "Original Creations",
+            "items": [
+              { "name": "The 108 Sour",          "desc": "Bourbon, fresh lemon, honey syrup, egg white, Angostura float", "note": "house fave" },
+              { "name": "Sunlit Garden",          "desc": "Gin, elderflower, cucumber, fresh lime, prosecco" },
+              { "name": "Daylight Old Fashioned", "desc": "Rye whiskey, smoked maple, orange bitters, expressed peel" },
+              { "name": "Apartment Negroni",      "desc": "Campari, sweet vermouth, gin, orange twist" }
+            ]
+          },
+          {
+            "heading": "Classics, Our Way",
+            "items": [
+              { "name": "Daiquiri",         "desc": "White rum, fresh lime, cane sugar — shaken hard" },
+              { "name": "Paloma",           "desc": "Tequila blanco, grapefruit, lime, honey, sparkling water, salt rim" },
+              { "name": "Dark & Stormy",    "desc": "Dark rum, ginger beer, lime, Angostura" },
+              { "name": "Aperol Spritz",    "desc": "Aperol, prosecco, soda, orange wheel" },
+              { "name": "Espresso Martini", "desc": "Vodka, fresh-pulled espresso, coffee liqueur, sugar", "note": "coffee + cocktail" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "beer-wine",
+        "label": "Cellar & Draft",
+        "title": "Beer & Wine",
+        "categories": [
+          {
+            "heading": "Beer",
+            "items": [
+              { "name": "Seasonal Lager", "desc": "Ask your host what's cold tonight" },
+              { "name": "IPA",            "desc": "Rotating selection — ask what's in the fridge" },
+              { "name": "Non-Alcoholic",  "desc": "Athletic Brewing Run Wild IPA", "note": "NA" }
+            ]
+          },
+          {
+            "heading": "Wine",
+            "items": [
+              { "name": "House White",  "desc": "Selection rotates with the season — ask your host" },
+              { "name": "House Red",    "desc": "Selection rotates with the season — ask your host" },
+              { "name": "Sparkling",    "desc": "Prosecco or Cava — ask what's chilled" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "spirits",
+        "label": "The Back Bar",
+        "title": "Spirits",
+        "spiritCards": true,
+        "categories": [
+          {
+            "heading": "Whiskey & Bourbon",
+            "items": [
+              { "name": "Bulleit Bourbon",    "desc": "90°" },
+              { "name": "Rittenhouse Rye",    "desc": "100°" },
+              { "name": "Jameson Irish",      "desc": "80°" }
+            ]
+          },
+          {
+            "heading": "Gin & Vodka",
+            "items": [
+              { "name": "Hendrick's Gin",       "desc": "88°" },
+              { "name": "Tanqueray London Dry", "desc": "94°" },
+              { "name": "Grey Goose Vodka",     "desc": "80°" }
+            ]
+          },
+          {
+            "heading": "Rum & Tequila",
+            "items": [
+              { "name": "Plantation 3 Stars",   "desc": "82°" },
+              { "name": "Gosling's Black Seal",  "desc": "80°" },
+              { "name": "Espolon Blanco",        "desc": "80°" }
+            ]
+          },
+          {
+            "heading": "Liqueurs & Amaro",
+            "items": [
+              { "name": "Campari",              "desc": "48°" },
+              { "name": "Aperol",               "desc": "22°" },
+              { "name": "Elderflower Liqueur",  "desc": "40°" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "provisions",
+        "label": "Kitchen",
+        "title": "Provisions",
+        "categories": [
+          {
+            "heading": "Bites",
+            "items": [
+              { "name": "Charcuterie Board", "desc": "Cured meats, aged cheese, cornichons, whole grain mustard, crackers" },
+              { "name": "Mixed Olives",      "desc": "Marinated with citrus, chili, and herbs" },
+              { "name": "Bar Nuts",          "desc": "Rosemary, sea salt, brown butter glazed mixed nuts" },
+              { "name": "Dark Chocolate",    "desc": "70% single origin, served with fleur de sel" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F8F4ED;
+      --cream-dark: #EDE8DF;
+      --ink: #1A1610;
+      --ink-mid: #3D3528;
+      --gold: #B8943A;
+      --gold-light: #D4AA55;
+      --gold-pale: #F0E4C0;
+      --coffee: #6B4226;
+      --sage: #5A6B52;
+      --rule: rgba(26, 22, 16, 0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.5;
+    }
+
+    * { position: relative; z-index: 1; }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      text-decoration: none;
+      padding: 1.5rem 2rem;
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .back-link:hover { opacity: 1; color: var(--gold); }
+    .back-link::before { content: '←'; font-size: 14px; }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 2rem 2rem 3rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .eyebrow {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .logo em {
+      display: block;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold);
+    }
+
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--ink-mid);
+      margin-top: 1.2rem;
+      letter-spacing: 0.04em;
+    }
+
+    .ornament {
+      margin: 1.5rem auto 0;
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--rule);
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 10.5px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--gold); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    section { margin-top: 4.5rem; }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-label {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 9.5px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+
+    .section-divider {
+      margin: 1rem auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: var(--gold-light);
+    }
+
+    .diamond {
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .category-heading {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-top: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-grid { display: grid; grid-template-columns: 1fr; }
+
+    .menu-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .menu-item:first-child { border-top: 1px solid var(--rule); }
+
+    .item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .item-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--ink-mid);
+      line-height: 1.5;
+    }
+
+    .item-price {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.9rem;
+      color: var(--gold);
+      white-space: nowrap;
+      letter-spacing: 0.03em;
+    }
+
+    .item-badge {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--coffee);
+      background: var(--gold-pale);
+      padding: 2px 7px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .spirits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .spirit-card {
+      background: white;
+      border: 1px solid var(--cream-dark);
+      padding: 1.25rem 1.5rem;
+      border-radius: 2px;
+    }
+
+    .spirit-card-heading {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 8.5px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .spirit-list { list-style: none; }
+
+    .spirit-list li {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--ink-mid);
+      padding: 0.25rem 0;
+      border-bottom: 1px dashed rgba(26,22,16,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .spirit-list li:last-child { border-bottom: none; }
+
+    .spirit-proof {
+      font-size: 0.78rem;
+      color: var(--sage);
+      flex-shrink: 0;
+    }
+
+    .note-card {
+      background: var(--gold-pale);
+      border-left: 3px solid var(--gold);
+      padding: 1.25rem 1.75rem;
+      margin-top: 2.5rem;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--ink-mid);
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--rule);
+      margin-top: 4rem;
+    }
+
+    footer p {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 9.5px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    footer .footer-small {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-mid);
+      margin-top: 0.75rem;
+      font-style: italic;
+      text-transform: none;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .back-link { animation: fadeUp 0.5s ease both; }
+    header     { animation: fadeUp 0.6s 0.05s ease both; }
+    nav        { animation: fadeUp 0.6s 0.1s ease both; }
+    main       { animation: fadeUp 0.6s 0.15s ease both; }
+
+    @media (max-width: 600px) {
+      nav { gap: 1.25rem; }
+      .spirits-grid { grid-template-columns: 1fr 1fr; }
+      header { padding: 1.5rem 1.5rem 2rem; }
+      .menu-item { grid-template-columns: 1fr; gap: 0.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">Daylight 108</a>
+
+<header>
+  <p class="eyebrow">Daylight 108</p>
+  <h1 class="logo">Evening <em>Bar</em></h1>
+  <p class="tagline">Cocktails, spirits & everything in between</p>
+  <div class="ornament"></div>
+</header>
+
+<nav id="main-nav"></nav>
+<main id="main-content"></main>
+
+<footer>
+  <p>Daylight 108 &nbsp;·&nbsp; A Private Residence</p>
+  <p class="footer-small">Please drink responsibly &amp; enjoy the company</p>
+</footer>
+
+<script>
+  const data = JSON.parse(document.getElementById('bar-data').textContent);
+
+  const sectionNotes = {
+    cocktails:  'All cocktails prepared to order. Non-alcoholic variations available for most recipes — just ask.',
+    provisions: 'Provisions subject to availability. Your host is happy to accommodate requests.'
+  };
+
+  // Nav
+  const nav = document.getElementById('main-nav');
+  data.sections.forEach(s => {
+    const a = document.createElement('a');
+    a.href = '#' + s.id;
+    a.textContent = s.title;
+    nav.appendChild(a);
+  });
+
+  // Sections
+  const main = document.getElementById('main-content');
+
+  data.sections.forEach(section => {
+    const sec = document.createElement('section');
+    sec.id = section.id;
+
+    sec.innerHTML = `
+      <div class="section-header">
+        <p class="section-label">${section.label}</p>
+        <h2 class="section-title">${section.title}</h2>
+        <div class="section-divider"><span class="diamond"></span></div>
+      </div>`;
+
+    if (section.spiritCards) {
+      const grid = document.createElement('div');
+      grid.className = 'spirits-grid';
+      section.categories.forEach(cat => {
+        const card = document.createElement('div');
+        card.className = 'spirit-card';
+        card.innerHTML = `<p class="spirit-card-heading">${cat.heading}</p>`;
+        const ul = document.createElement('ul');
+        ul.className = 'spirit-list';
+        cat.items.forEach(item => {
+          const li = document.createElement('li');
+          li.innerHTML = `<span>${item.name}</span><span class="spirit-proof">${item.desc}</span>`;
+          ul.appendChild(li);
+        });
+        card.appendChild(ul);
+        grid.appendChild(card);
+      });
+      sec.appendChild(grid);
+
+    } else {
+      section.categories.forEach((cat, i) => {
+        const h = document.createElement('p');
+        h.className = 'category-heading';
+        if (i > 0) h.style.marginTop = '2rem';
+        h.textContent = cat.heading;
+        sec.appendChild(h);
+
+        const grid = document.createElement('div');
+        grid.className = 'menu-grid';
+        cat.items.forEach(item => {
+          const row = document.createElement('div');
+          row.className = 'menu-item';
+          const badge = item.note  ? `<span class="item-badge">${item.note}</span>` : '';
+          const price = item.price ? `<p class="item-price">${item.price}</p>` : '';
+          row.innerHTML = `
+            <div>
+              <p class="item-name">${item.name}${badge}</p>
+              <p class="item-desc">${item.desc}</p>
+            </div>${price}`;
+          grid.appendChild(row);
+        });
+        sec.appendChild(grid);
+      });
+
+      if (sectionNotes[section.id]) {
+        const note = document.createElement('div');
+        note.className = 'note-card';
+        note.textContent = sectionNotes[section.id];
+        sec.appendChild(note);
+      }
+    }
+
+    main.appendChild(sec);
+  });
+</script>
+</body>
+</html>

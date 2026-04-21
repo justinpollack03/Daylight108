@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coffee — Daylight 108</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&family=Karla:wght@300;400&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+    COFFEE MENU DATA — Edit this block to update the menu.
+
+    Each item has:
+      "name"  — item name (required)
+      "desc"  — description (required)
+      "note"  — optional badge, e.g. "seasonal", "house fave"
+      "temp"  — optional: "hot", "cold", or omit for both
+
+    HOW TO EDIT:
+      Add item    → copy a { } block, paste it, edit the fields
+      Remove item → delete its { } block and the trailing comma
+      Change bean → edit "currentBean" at the top
+  ============================================================ -->
+  <script type="application/json" id="coffee-data">
+  {
+    "currentBean": "Ethiopia Yirgacheffe — Stumptown Coffee",
+    "beanNotes": "Blueberry, jasmine, bright citrus finish",
+
+    "categories": [
+      {
+        "heading": "Espresso",
+        "items": [
+          { "name": "Espresso",       "desc": "Single or double shot, pulled to order", "temp": "hot" },
+          { "name": "Americano",      "desc": "Double espresso, hot water", "temp": "hot" },
+          { "name": "Macchiato",      "desc": "Double espresso, small dollop of foam", "temp": "hot" },
+          { "name": "Cortado",        "desc": "Double espresso, equal parts steamed whole milk", "temp": "hot" },
+          { "name": "Flat White",     "desc": "Double ristretto, velvety microfoam — 5oz", "temp": "hot", "note": "house fave" },
+          { "name": "Cappuccino",     "desc": "Double espresso, steamed milk, deep foam — 6oz", "temp": "hot" },
+          { "name": "Latte",          "desc": "Double espresso, steamed milk, light foam — 8oz", "temp": "hot" }
+        ]
+      },
+      {
+        "heading": "Cold",
+        "items": [
+          { "name": "Iced Latte",     "desc": "Double espresso over ice, cold whole milk", "temp": "cold" },
+          { "name": "Iced Americano", "desc": "Double espresso over ice, cold water", "temp": "cold" },
+          { "name": "Espresso Tonic", "desc": "Double espresso over tonic water and ice — bracing and bright", "temp": "cold", "note": "house fave" },
+          { "name": "Iced Pour Over", "desc": "Brewed hot directly over ice — clean, vibrant, cold", "temp": "cold" }
+        ]
+      },
+      {
+        "heading": "Pour Over",
+        "items": [
+          { "name": "Pour Over",      "desc": "Single cup, freshly ground to order — ask your host about the current bean", "note": "single origin" }
+        ]
+      },
+      {
+        "heading": "Alternatives",
+        "items": [
+          { "name": "Oat Milk",       "desc": "Available as a substitute in any drink — just ask", "note": "dairy-free" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #1E140C;
+      --bg2:       #271A10;
+      --bg3:       #321F12;
+      --ink:       #F2E8DC;
+      --ink-mid:   #C4A882;
+      --ink-muted: #7A5C42;
+      --accent:    #C4855A;
+      --accent2:   #8B5E3C;
+      --warm:      #E8C99A;
+      --rule:      rgba(196,133,90,0.2);
+      --badge-bg:  rgba(196,133,90,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: 'Zilla Slab', Georgia, serif;
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* Grain + warmth overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(ellipse at 15% 20%, rgba(196,133,90,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 80%, rgba(139,94,60,0.1) 0%, transparent 45%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      background-size: cover, cover, 250px 250px;
+    }
+
+    /* Horizontal wood-grain texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: repeating-linear-gradient(
+        180deg,
+        transparent,
+        transparent 28px,
+        rgba(196,133,90,0.025) 28px,
+        rgba(196,133,90,0.025) 29px
+      );
+    }
+
+    * { position: relative; z-index: 1; }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Karla', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: 1.5rem 2rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--accent); }
+
+    .back-link::before {
+      content: '←';
+      font-size: 14px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 2rem 2rem 3.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .eyebrow {
+      font-family: 'Karla', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 400;
+      line-height: 1;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .logo em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .tagline {
+      font-family: 'Zilla Slab', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1rem;
+      color: var(--ink-mid);
+      margin-top: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .ornament {
+      margin: 1.5rem auto 0;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    /* ── BEAN CARD ── */
+    .bean-card {
+      max-width: 680px;
+      margin: 2.5rem auto 0;
+      background: var(--bg3);
+      border: 1px solid var(--rule);
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .bean-icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .bean-label {
+      font-family: 'Karla', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .bean-name {
+      font-family: 'Zilla Slab', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    .bean-notes {
+      font-family: 'Zilla Slab', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--ink-mid);
+      margin-top: 0.2rem;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ── CATEGORY ── */
+    .category { margin-top: 3.5rem; }
+
+    .category-heading {
+      font-family: 'Karla', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* ── MENU ITEMS ── */
+    .menu-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(196,133,90,0.1);
+    }
+
+    .menu-item:last-child { border-bottom: none; }
+
+    .item-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--warm);
+      margin-bottom: 0.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      line-height: 1.2;
+    }
+
+    .item-desc {
+      font-family: 'Zilla Slab', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+      line-height: 1.5;
+    }
+
+    .item-badge {
+      font-family: 'Karla', sans-serif;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--badge-bg);
+      border: 1px solid rgba(196,133,90,0.25);
+      padding: 2px 7px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .temp-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .temp-hot  { background: #C4855A; }
+    .temp-cold { background: #6A9BAF; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    footer p {
+      font-family: 'Karla', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .back-link { animation: fadeUp 0.5s ease both; }
+    header     { animation: fadeUp 0.6s 0.05s ease both; }
+    main       { animation: fadeUp 0.6s 0.15s ease both; }
+
+    @media (max-width: 600px) {
+      .menu-item { grid-template-columns: 1fr; }
+      header { padding: 1.5rem 1.5rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">Daylight 108</a>
+
+<header>
+  <p class="eyebrow">Daylight 108</p>
+  <h1 class="logo">Morning <em>Coffee</em></h1>
+  <p class="tagline">Pulled fresh on the Gaggia Classic Pro</p>
+  <div class="ornament"></div>
+  <div class="bean-card" id="bean-card">
+    <svg class="bean-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="18" cy="18" rx="13" ry="9" stroke="#C4855A" stroke-width="1.2" fill="none"/>
+      <path d="M18 9 Q22 18 18 27" stroke="#C4855A" stroke-width="1.2" fill="none"/>
+    </svg>
+    <div>
+      <p class="bean-label">Current Bean</p>
+      <p class="bean-name" id="bean-name"></p>
+      <p class="bean-notes" id="bean-notes"></p>
+    </div>
+  </div>
+</header>
+
+<main id="main-content"></main>
+
+<footer>
+  <p>All coffee made to order &nbsp;·&nbsp; Ask your host for oat milk</p>
+</footer>
+
+<script>
+  const data = JSON.parse(document.getElementById('coffee-data').textContent);
+
+  document.getElementById('bean-name').textContent  = data.currentBean;
+  document.getElementById('bean-notes').textContent = data.beanNotes;
+
+  const main = document.getElementById('main-content');
+
+  data.categories.forEach(cat => {
+    const section = document.createElement('div');
+    section.className = 'category';
+
+    const h = document.createElement('p');
+    h.className = 'category-heading';
+    h.textContent = cat.heading;
+    section.appendChild(h);
+
+    cat.items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'menu-item';
+
+      const badge  = item.note ? `<span class="item-badge">${item.note}</span>` : '';
+      const dot    = item.temp
+        ? `<span class="temp-dot temp-${item.temp}" title="${item.temp}"></span>`
+        : '';
+
+      row.innerHTML = `
+        <div>
+          <p class="item-name">${item.name}${badge}</p>
+          <p class="item-desc">${item.desc}</p>
+        </div>
+        ${dot}
+      `;
+      section.appendChild(row);
+    });
+
+    main.appendChild(section);
+  });
+</script>
+
+</body>
+</html>

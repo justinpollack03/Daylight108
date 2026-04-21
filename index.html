@@ -4,624 +4,335 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daylight 108</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet" />
-
-  <!-- ============================================================
-    MENU DATA — Edit this block to update the menu.
-
-    Each section has:
-      "id"         — used for navigation anchors (no spaces)
-      "label"      — small eyebrow text above the section title
-      "title"      — the section heading
-      "spiritCards"— set to true for the compact spirit-card grid layout
-      "categories" — array of groups, each with:
-          "heading" — small category label
-          "items"   — array of menu items
-
-    Each item has:
-      "name"  — the item name (required)
-      "desc"  — description or proof for spirits (required)
-      "note"  — optional small badge, e.g. "seasonal", "house fave", "NA"
-      "price" — optional price string; omit to show nothing
-
-    HOW TO EDIT:
-      Add item    → copy a { } block inside "items", paste it, edit fields
-      Remove item → delete its { } block and the trailing comma
-      Add category→ copy a { "heading":..., "items":[...] } block
-      Add section → copy a full section object in "sections"
-      Rename bar  → edit "barName" and "tagline" at the top
-  ============================================================ -->
-  <script type="application/json" id="menu-data">
-  {
-    "barName": "Daylight 108",
-    "tagline": "Coffee, cocktails & good company",
-    "footer": "A private residence · Please drink responsibly",
-
-    "sections": [
-      {
-        "id": "coffee",
-        "label": "Gaggia Classic Pro",
-        "title": "Coffee",
-        "categories": [
-          {
-            "heading": "Espresso Drinks",
-            "items": [
-              { "name": "Espresso",         "desc": "Single or double shot, pulled to order" },
-              { "name": "Americano",        "desc": "Double espresso, hot water" },
-              { "name": "Cortado",          "desc": "Double espresso, equal parts steamed whole milk" },
-              { "name": "Flat White",       "desc": "Double ristretto, microfoam whole milk — 5oz" },
-              { "name": "Cappuccino",       "desc": "Double espresso, steamed milk, deep foam — 6oz" },
-              { "name": "Latte",            "desc": "Double espresso, steamed milk, light foam — 8oz" },
-              { "name": "Macchiato",        "desc": "Double espresso, small dollop of foam" },
-              { "name": "Oat Milk Option",  "desc": "Available for any espresso drink — just ask", "note": "dairy-free" }
-            ]
-          },
-          {
-            "heading": "Pour Over",
-            "items": [
-              { "name": "Pour Over",        "desc": "Single cup, freshly ground — ask your host what's in the grinder", "note": "single origin" },
-              { "name": "Iced Pour Over",   "desc": "Brewed hot directly over ice — clean, bright, and cold" }
-            ]
-          },
-          {
-            "heading": "Cold & Other",
-            "items": [
-              { "name": "Iced Latte",       "desc": "Double espresso over ice, cold whole milk" },
-              { "name": "Iced Americano",   "desc": "Double espresso over ice, cold water" },
-              { "name": "Espresso Tonic",   "desc": "Double espresso over tonic water and ice — bracing and bright", "note": "house fave" }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "cocktails",
-        "label": "Handcrafted",
-        "title": "Cocktails",
-        "categories": [
-          {
-            "heading": "Original Creations",
-            "items": [
-              { "name": "The 108 Sour",          "desc": "Bourbon, fresh lemon, honey syrup, egg white, Angostura float", "note": "house fave" },
-              { "name": "Sunlit Garden",          "desc": "Gin, elderflower, cucumber, fresh lime, prosecco" },
-              { "name": "Daylight Old Fashioned", "desc": "Rye whiskey, smoked maple, orange bitters, expressed peel" },
-              { "name": "Apartment Negroni",      "desc": "Campari, sweet vermouth, gin, orange twist" }
-            ]
-          },
-          {
-            "heading": "Classics, Our Way",
-            "items": [
-              { "name": "Daiquiri",        "desc": "White rum, fresh lime, cane sugar — shaken hard" },
-              { "name": "Paloma",          "desc": "Tequila blanco, grapefruit, lime, honey, sparkling water, salt rim" },
-              { "name": "Dark & Stormy",   "desc": "Dark rum, ginger beer, lime, Angostura" },
-              { "name": "Aperol Spritz",   "desc": "Aperol, prosecco, soda, orange wheel" },
-              { "name": "Espresso Martini","desc": "Vodka, fresh-pulled espresso, coffee liqueur, sugar", "note": "coffee + cocktail" }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "beer-wine",
-        "label": "Cellar & Draft",
-        "title": "Beer & Wine",
-        "categories": [
-          {
-            "heading": "Beer",
-            "items": [
-              { "name": "Seasonal Lager", "desc": "Ask your host what's cold tonight" },
-              { "name": "IPA",            "desc": "Rotating selection — ask what's in the fridge" },
-              { "name": "Non-Alcoholic",  "desc": "Athletic Brewing Run Wild IPA", "note": "NA" }
-            ]
-          },
-          {
-            "heading": "Wine",
-            "items": [
-              { "name": "House White",  "desc": "Selection rotates with the season — ask your host" },
-              { "name": "House Red",    "desc": "Selection rotates with the season — ask your host" },
-              { "name": "Sparkling",    "desc": "Prosecco or Cava — ask what's chilled" }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "spirits",
-        "label": "The Back Bar",
-        "title": "Spirits",
-        "spiritCards": true,
-        "categories": [
-          {
-            "heading": "Whiskey & Bourbon",
-            "items": [
-              { "name": "Bulleit Bourbon",    "desc": "90°" },
-              { "name": "Rittenhouse Rye",    "desc": "100°" },
-              { "name": "Jameson Irish",      "desc": "80°" }
-            ]
-          },
-          {
-            "heading": "Gin & Vodka",
-            "items": [
-              { "name": "Hendrick's Gin",      "desc": "88°" },
-              { "name": "Tanqueray London Dry","desc": "94°" },
-              { "name": "Grey Goose Vodka",    "desc": "80°" }
-            ]
-          },
-          {
-            "heading": "Rum & Tequila",
-            "items": [
-              { "name": "Plantation 3 Stars",  "desc": "82°" },
-              { "name": "Gosling's Black Seal", "desc": "80°" },
-              { "name": "Espolon Blanco",      "desc": "80°" }
-            ]
-          },
-          {
-            "heading": "Liqueurs & Amaro",
-            "items": [
-              { "name": "Campari",             "desc": "48°" },
-              { "name": "Aperol",              "desc": "22°" },
-              { "name": "Elderflower Liqueur", "desc": "40°" }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "provisions",
-        "label": "Kitchen",
-        "title": "Provisions",
-        "categories": [
-          {
-            "heading": "Bites",
-            "items": [
-              { "name": "Charcuterie Board", "desc": "Cured meats, aged cheese, cornichons, whole grain mustard, crackers" },
-              { "name": "Mixed Olives",      "desc": "Marinated with citrus, chili, and herbs" },
-              { "name": "Bar Nuts",          "desc": "Rosemary, sea salt, brown butter glazed mixed nuts" },
-              { "name": "Dark Chocolate",    "desc": "70% single origin, served with fleur de sel" }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-  </script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Libre+Baskerville&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --cream: #F8F4ED;
-      --cream-dark: #EDE8DF;
       --ink: #1A1610;
-      --ink-mid: #3D3528;
       --gold: #B8943A;
-      --gold-light: #D4AA55;
-      --gold-pale: #F0E4C0;
-      --coffee: #6B4226;
-      --sage: #5A6B52;
-      --rule: rgba(26, 22, 16, 0.15);
+      --coffee-bg: #2C1F14;
+      --coffee-accent: #C4855A;
+      --bar-bg: #F8F4ED;
+      --bar-accent: #B8943A;
     }
 
-    html { scroll-behavior: smooth; }
-
-    body {
-      background-color: var(--cream);
-      color: var(--ink);
+    html, body {
+      height: 100%;
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 300;
-      font-size: 18px;
-      line-height: 1.7;
-      min-height: 100vh;
+      overflow: hidden;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-      opacity: 0.5;
+    /* ── SPLIT LAYOUT ── */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100vh;
+      position: relative;
     }
 
-    * { position: relative; z-index: 1; }
-
-    header {
-      text-align: center;
-      padding: 5rem 2rem 3rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .eyebrow {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 10px;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-    }
-
-    .logo {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(3rem, 8vw, 5.5rem);
-      font-weight: 400;
-      line-height: 1.05;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-    }
-
-    .logo em {
-      display: block;
-      font-style: italic;
-      font-weight: 400;
-      color: var(--gold);
-    }
-
-    .tagline {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--ink-mid);
-      margin-top: 1.2rem;
-      letter-spacing: 0.04em;
-    }
-
-    .ornament {
-      margin: 1.5rem auto 0;
-      width: 120px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-
-    nav {
+    .panel {
+      position: relative;
       display: flex;
-      justify-content: center;
-      gap: 2.5rem;
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid var(--rule);
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 10.5px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--ink-mid);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    nav a:hover { color: var(--gold); }
-
-    main {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 2rem 6rem;
-    }
-
-    section { margin-top: 4.5rem; }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .section-label {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 9.5px;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.75rem;
-    }
-
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 400;
-      color: var(--ink);
-      line-height: 1.15;
-    }
-
-    .section-divider {
-      margin: 1rem auto 0;
-      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.75rem;
+      text-decoration: none;
+      overflow: hidden;
+      cursor: pointer;
+      transition: flex 0.6s cubic-bezier(0.77, 0, 0.18, 1);
     }
 
-    .section-divider::before,
-    .section-divider::after {
+    .split:has(.panel-coffee:hover) .panel-coffee { flex: 1.35; }
+    .split:has(.panel-coffee:hover) .panel-bar    { flex: 0.65; }
+    .split:has(.panel-bar:hover)    .panel-bar    { flex: 1.35; }
+    .split:has(.panel-bar:hover)    .panel-coffee { flex: 0.65; }
+
+    /* ── COFFEE PANEL ── */
+    .panel-coffee {
+      background-color: #2C1F14;
+    }
+
+    .panel-coffee::before {
       content: '';
-      display: block;
-      width: 60px;
-      height: 1px;
-      background: var(--gold-light);
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 30% 60%, rgba(196,133,90,0.18) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: cover, 300px 300px;
+      pointer-events: none;
     }
 
-    .diamond {
-      width: 5px;
-      height: 5px;
-      background: var(--gold);
-      transform: rotate(45deg);
-      flex-shrink: 0;
+    /* Wood grain lines */
+    .panel-coffee::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        168deg,
+        transparent,
+        transparent 40px,
+        rgba(196,133,90,0.04) 40px,
+        rgba(196,133,90,0.04) 41px
+      );
+      pointer-events: none;
     }
 
-    .category-heading {
+    /* ── BAR PANEL ── */
+    .panel-bar {
+      background-color: #F8F4ED;
+    }
+
+    .panel-bar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 70% 40%, rgba(184,148,58,0.12) 0%, transparent 55%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: cover, 200px 200px;
+      pointer-events: none;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      pointer-events: none;
+    }
+
+    .divider-line {
+      width: 1px;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, rgba(184,148,58,0.5), transparent);
+    }
+
+    .divider-logo {
+      background: var(--cream);
+      border: 1px solid rgba(184,148,58,0.4);
+      padding: 1.25rem 1.75rem;
+      text-align: center;
+    }
+
+    .divider-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: #1A1610;
+      line-height: 1;
+      letter-spacing: 0.01em;
+    }
+
+    .divider-name em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .divider-sub {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 8px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #B8943A;
+      margin-top: 0.4rem;
+    }
+
+    /* ── PANEL CONTENT ── */
+    .panel-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .panel-eyebrow {
       font-family: 'Libre Baskerville', serif;
       font-size: 9px;
       letter-spacing: 0.4em;
       text-transform: uppercase;
-      color: var(--sage);
-      margin-top: 2.5rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1.25rem;
+      opacity: 0.7;
+      transition: opacity 0.3s;
     }
 
-    .menu-grid { display: grid; grid-template-columns: 1fr; }
+    .panel:hover .panel-eyebrow { opacity: 1; }
 
-    .menu-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: baseline;
-      gap: 1rem;
-      padding: 1.1rem 0;
-      border-bottom: 1px solid var(--rule);
-    }
+    .panel-coffee .panel-eyebrow { color: #C4855A; }
+    .panel-bar    .panel-eyebrow { color: #B8943A; }
 
-    .menu-item:first-child { border-top: 1px solid var(--rule); }
-
-    .item-name {
+    .panel-heading {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 0.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
     }
 
-    .item-desc {
+    .panel-coffee .panel-heading { color: #F2E8DC; }
+    .panel-bar    .panel-heading { color: #1A1610; }
+
+    .panel-heading em {
+      display: block;
+      font-style: italic;
+    }
+
+    .panel-coffee .panel-heading em { color: #C4855A; }
+    .panel-bar    .panel-heading em { color: #B8943A; }
+
+    .panel-desc {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 0.95rem;
-      color: var(--ink-mid);
-      line-height: 1.5;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-top: 1rem;
+      max-width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s 0.05s, transform 0.35s 0.05s;
     }
 
-    .item-price {
+    .panel:hover .panel-desc {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .panel-coffee .panel-desc { color: rgba(242,232,220,0.75); }
+    .panel-bar    .panel-desc { color: #3D3528; }
+
+    .panel-cta {
+      display: inline-block;
+      margin-top: 1.75rem;
       font-family: 'Libre Baskerville', serif;
-      font-size: 0.9rem;
-      color: var(--gold);
-      white-space: nowrap;
-      letter-spacing: 0.03em;
-    }
-
-    .item-badge {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 8px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--coffee);
-      background: var(--gold-pale);
-      padding: 2px 7px;
-      border-radius: 2px;
-      white-space: nowrap;
-    }
-
-    .spirits-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.25rem;
-      margin-top: 0.5rem;
-    }
-
-    .spirit-card {
-      background: white;
-      border: 1px solid var(--cream-dark);
-      padding: 1.25rem 1.5rem;
-      border-radius: 2px;
-    }
-
-    .spirit-card-heading {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 8.5px;
+      font-size: 9px;
       letter-spacing: 0.35em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.8rem;
+      padding: 0.6rem 1.4rem;
+      border: 1px solid;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.35s 0.1s, transform 0.35s 0.1s, background 0.2s;
     }
 
-    .spirit-list { list-style: none; }
-
-    .spirit-list li {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      color: var(--ink-mid);
-      padding: 0.25rem 0;
-      border-bottom: 1px dashed rgba(26,22,16,0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 0.5rem;
+    .panel:hover .panel-cta {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .spirit-list li:last-child { border-bottom: none; }
-
-    .spirit-proof {
-      font-size: 0.78rem;
-      color: var(--sage);
-      flex-shrink: 0;
+    .panel-coffee .panel-cta {
+      color: #C4855A;
+      border-color: rgba(196,133,90,0.5);
+    }
+    .panel-coffee .panel-cta:hover {
+      background: rgba(196,133,90,0.12);
+    }
+    .panel-bar .panel-cta {
+      color: #B8943A;
+      border-color: rgba(184,148,58,0.5);
+    }
+    .panel-bar .panel-cta:hover {
+      background: rgba(184,148,58,0.1);
     }
 
-    .note-card {
-      background: var(--gold-pale);
-      border-left: 3px solid var(--gold);
-      padding: 1.25rem 1.75rem;
-      margin-top: 2.5rem;
-      font-style: italic;
-      font-size: 0.95rem;
-      color: var(--ink-mid);
-      line-height: 1.7;
-    }
-
-    footer {
-      text-align: center;
-      padding: 3rem 2rem;
-      border-top: 1px solid var(--rule);
-      margin-top: 4rem;
-    }
-
-    footer p {
+    /* ── CORNER LABEL ── */
+    .corner-label {
+      position: absolute;
+      bottom: 2.5rem;
       font-family: 'Libre Baskerville', serif;
-      font-size: 9.5px;
+      font-size: 8.5px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--gold);
+      opacity: 0.35;
+      transition: opacity 0.3s;
     }
 
-    footer .footer-small {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
-      color: var(--ink-mid);
-      margin-top: 0.75rem;
-      font-style: italic;
-      text-transform: none;
-    }
+    .panel:hover .corner-label { opacity: 0.6; }
+    .panel-coffee .corner-label { color: #C4855A; right: 2.5rem; }
+    .panel-bar    .corner-label { color: #B8943A; left: 2.5rem; }
 
+    /* ── ANIMATIONS ── */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
+      from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    header { animation: fadeUp 0.7s ease both; }
-    nav    { animation: fadeUp 0.7s 0.1s ease both; }
-    main   { animation: fadeUp 0.6s 0.2s ease both; }
+    .panel-coffee .panel-content { animation: fadeUp 0.8s 0.1s ease both; }
+    .panel-bar    .panel-content { animation: fadeUp 0.8s 0.2s ease both; }
+    .divider                     { animation: fadeUp 0.8s 0.3s ease both; }
 
-    @media (max-width: 600px) {
-      nav { gap: 1.25rem; }
-      .spirits-grid { grid-template-columns: 1fr 1fr; }
-      header { padding: 3rem 1.5rem 2rem; }
-      .menu-item { grid-template-columns: 1fr; gap: 0.2rem; }
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      html, body { overflow: auto; }
+      .split {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        height: auto;
+        min-height: 100vh;
+      }
+      .panel { min-height: 50vh; }
+      .split:has(.panel-coffee:hover) .panel-coffee,
+      .split:has(.panel-coffee:hover) .panel-bar,
+      .split:has(.panel-bar:hover) .panel-bar,
+      .split:has(.panel-bar:hover) .panel-coffee { flex: 1; }
+      .divider { display: none; }
+      .panel-desc, .panel-cta { opacity: 1; transform: none; }
+      .corner-label { opacity: 0.5; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <p class="eyebrow">Est. 2025 &nbsp;·&nbsp; A Private Residence</p>
-  <h1 class="logo" id="header-logo"></h1>
-  <p class="tagline" id="header-tagline"></p>
-  <div class="ornament"></div>
-</header>
+<div class="split">
 
-<nav id="main-nav"></nav>
-<main id="main-content"></main>
+  <!-- COFFEE -->
+  <a class="panel panel-coffee" href="coffee.html">
+    <div class="panel-content">
+      <p class="panel-eyebrow">Gaggia Classic Pro</p>
+      <h2 class="panel-heading">
+        Morning
+        <em>Coffee</em>
+      </h2>
+      <p class="panel-desc">Espresso drinks, pour overs & everything in between</p>
+      <span class="panel-cta">View Menu</span>
+    </div>
+    <span class="corner-label">Coffee Menu</span>
+  </a>
 
-<footer>
-  <p id="footer-name"></p>
-  <p class="footer-small" id="footer-text"></p>
-</footer>
+  <!-- DIVIDER LOGO -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-logo">
+      <p class="divider-name">Daylight <em>108</em></p>
+      <p class="divider-sub">A private residence</p>
+    </div>
+    <div class="divider-line"></div>
+  </div>
 
-<script>
-  const data = JSON.parse(document.getElementById('menu-data').textContent);
+  <!-- BAR -->
+  <a class="panel panel-bar" href="bar.html">
+    <div class="panel-content">
+      <p class="panel-eyebrow">Handcrafted Cocktails</p>
+      <h2 class="panel-heading">
+        Evening
+        <em>Bar</em>
+      </h2>
+      <p class="panel-desc">Cocktails, spirits, beer & wine — made to order</p>
+      <span class="panel-cta">View Menu</span>
+    </div>
+    <span class="corner-label">Bar Menu</span>
+  </a>
 
-  // Header
-  const parts = data.barName.split(' ');
-  document.getElementById('header-logo').innerHTML =
-    parts[0] + (parts.length > 1 ? `<em>${parts.slice(1).join(' ')}</em>` : '');
-  document.getElementById('header-tagline').textContent = data.tagline;
-  document.title = data.barName;
+</div>
 
-  // Footer
-  document.getElementById('footer-name').textContent = data.barName;
-  document.getElementById('footer-text').textContent = data.footer;
-
-  // Nav
-  const nav = document.getElementById('main-nav');
-  data.sections.forEach(s => {
-    const a = document.createElement('a');
-    a.href = '#' + s.id;
-    a.textContent = s.title;
-    nav.appendChild(a);
-  });
-
-  // Section notes
-  const sectionNotes = {
-    coffee:     'All coffee made to order on the Gaggia Classic Pro. Ask your host about the current bean — we rotate regularly.',
-    cocktails:  'All cocktails prepared to order. Non-alcoholic variations available for most recipes — just ask.',
-    provisions: 'Provisions subject to availability. Your host is happy to accommodate requests.'
-  };
-
-  // Build sections
-  const main = document.getElementById('main-content');
-
-  data.sections.forEach(section => {
-    const sec = document.createElement('section');
-    sec.id = section.id;
-
-    sec.innerHTML = `
-      <div class="section-header">
-        <p class="section-label">${section.label}</p>
-        <h2 class="section-title">${section.title}</h2>
-        <div class="section-divider"><span class="diamond"></span></div>
-      </div>`;
-
-    if (section.spiritCards) {
-      const grid = document.createElement('div');
-      grid.className = 'spirits-grid';
-      section.categories.forEach(cat => {
-        const card = document.createElement('div');
-        card.className = 'spirit-card';
-        card.innerHTML = `<p class="spirit-card-heading">${cat.heading}</p>`;
-        const ul = document.createElement('ul');
-        ul.className = 'spirit-list';
-        cat.items.forEach(item => {
-          const li = document.createElement('li');
-          li.innerHTML = `<span>${item.name}</span><span class="spirit-proof">${item.desc}</span>`;
-          ul.appendChild(li);
-        });
-        card.appendChild(ul);
-        grid.appendChild(card);
-      });
-      sec.appendChild(grid);
-
-    } else {
-      section.categories.forEach((cat, i) => {
-        const h = document.createElement('p');
-        h.className = 'category-heading';
-        if (i > 0) h.style.marginTop = '2rem';
-        h.textContent = cat.heading;
-        sec.appendChild(h);
-
-        const grid = document.createElement('div');
-        grid.className = 'menu-grid';
-        cat.items.forEach(item => {
-          const row = document.createElement('div');
-          row.className = 'menu-item';
-          const badge = item.note ? `<span class="item-badge">${item.note}</span>` : '';
-          const price = item.price ? `<p class="item-price">${item.price}</p>` : '';
-          row.innerHTML = `
-            <div>
-              <p class="item-name">${item.name}${badge}</p>
-              <p class="item-desc">${item.desc}</p>
-            </div>${price}`;
-          grid.appendChild(row);
-        });
-        sec.appendChild(grid);
-      });
-
-      if (sectionNotes[section.id]) {
-        const note = document.createElement('div');
-        note.className = 'note-card';
-        note.textContent = sectionNotes[section.id];
-        sec.appendChild(note);
-      }
-    }
-
-    main.appendChild(sec);
-  });
-</script>
 </body>
 </html>
