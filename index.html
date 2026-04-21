@@ -12,10 +12,6 @@
       --cream: #F8F4ED;
       --ink: #1A1610;
       --gold: #B8943A;
-      --coffee-bg: #2C1F14;
-      --coffee-accent: #C4855A;
-      --bar-bg: #F8F4ED;
-      --bar-accent: #B8943A;
     }
 
     html, body {
@@ -24,41 +20,99 @@
       overflow: hidden;
     }
 
+    /* ─────────────────────────────────────
+       SLIDESHOW
+       Each slide sits stacked; the active
+       one fades in and runs a Ken Burns
+       CSS animation, then fades out.
+    ───────────────────────────────────── */
+    .slideshow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      /* fade timing is driven by JS adding/removing classes */
+      transition: opacity 1.8s ease-in-out;
+      will-change: opacity, transform;
+      overflow: hidden;
+    }
+
+    .slide img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Ken Burns: each slide gets one of 4 directional zooms via nth-child */
+      transform-origin: center center;
+      animation: none;
+    }
+
+    /* Active slide fades in and its image starts Ken Burns */
+    .slide.active {
+      opacity: 1;
+    }
+
+    .slide.active img {
+      animation: kb 12s ease-in-out forwards;
+    }
+
+    /* Four different KB directions — nth-child cycles through them */
+    .slide:nth-child(1).active img { animation-name: kb-tl; }
+    .slide:nth-child(2).active img { animation-name: kb-br; }
+    .slide:nth-child(3).active img { animation-name: kb-tr; }
+    .slide:nth-child(4).active img { animation-name: kb-bl; }
+    /* If more than 4 photos, repeat the cycle */
+    .slide:nth-child(5).active img { animation-name: kb-tl; }
+    .slide:nth-child(6).active img { animation-name: kb-br; }
+    .slide:nth-child(7).active img { animation-name: kb-tr; }
+    .slide:nth-child(8).active img { animation-name: kb-bl; }
+
+    @keyframes kb-tl {
+      from { transform: scale(1.12) translate( 2%,  2%); }
+      to   { transform: scale(1.0)  translate( 0%,  0%); }
+    }
+    @keyframes kb-br {
+      from { transform: scale(1.0)  translate( 0%,  0%); }
+      to   { transform: scale(1.12) translate(-2%, -2%); }
+    }
+    @keyframes kb-tr {
+      from { transform: scale(1.1)  translate(-2%,  2%); }
+      to   { transform: scale(1.0)  translate( 0%,  0%); }
+    }
+    @keyframes kb-bl {
+      from { transform: scale(1.0)  translate( 0%,  0%); }
+      to   { transform: scale(1.1)  translate( 2%, -2%); }
+    }
+
+    /* ── DARK OVERLAY so panel text stays readable ── */
+    .slideshow-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      /* Left (coffee) half: deep dark brown; right (bar) half: warm cream tint */
+      background: linear-gradient(
+        to right,
+        rgba(28, 16, 8,  0.72) 0%,
+        rgba(28, 16, 8,  0.65) 45%,
+        rgba(248,244,237,0.60) 55%,
+        rgba(248,244,237,0.68) 100%
+      );
+      pointer-events: none;
+    }
+
     /* ── SPLIT LAYOUT ── */
     .split {
       display: grid;
       grid-template-columns: 1fr 1fr;
       height: 100vh;
       position: relative;
-      z-index: 1;
-    }
-
-    /* ── SLIDESHOW ── */
-    .slideshow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
       z-index: 2;
-      pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .slideshow img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out;
-    }
-
-    .slideshow img.active {
-      opacity: 0.08;
     }
 
     .panel {
@@ -70,7 +124,28 @@
       text-decoration: none;
       overflow: hidden;
       cursor: pointer;
+      /* transparent — photo shows through */
+      background: transparent;
       transition: flex 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+    }
+
+    /* Hover: deepen the overlay on the hovered side via a pseudo */
+    .panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .panel-coffee::after { background: rgba(20, 10, 4, 0.25); }
+    .panel-bar::after    { background: rgba(248,244,237, 0.2); }
+    .panel:hover::after  { opacity: 1; }
+
+    /* Vertical centre divider line */
+    .panel-coffee {
+      border-right: 1px solid rgba(184,148,58,0.3);
     }
 
     .split:has(.panel-coffee:hover) .panel-coffee { flex: 1.35; }
@@ -78,54 +153,26 @@
     .split:has(.panel-bar:hover)    .panel-bar    { flex: 1.35; }
     .split:has(.panel-bar:hover)    .panel-coffee { flex: 0.65; }
 
-    /* ── COFFEE PANEL ── */
-    .panel-coffee {
-      background-color: #2C1F14;
+    /* Grain texture per panel */
+    .panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .panel-coffee::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(ellipse at 30% 60%, rgba(196,133,90,0.18) 0%, transparent 60%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
-      background-size: cover, 300px 300px;
-      pointer-events: none;
-    }
-
-    /* Wood grain lines */
-    .panel-coffee::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: repeating-linear-gradient(
-        168deg,
-        transparent,
-        transparent 40px,
-        rgba(196,133,90,0.04) 40px,
-        rgba(196,133,90,0.04) 41px
-      );
-      pointer-events: none;
-    }
-
-    /* ── BAR PANEL ── */
-    .panel-bar {
-      background-color: #F8F4ED;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
     }
 
     .panel-bar::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(ellipse at 70% 40%, rgba(184,148,58,0.12) 0%, transparent 55%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      background-size: cover, 200px 200px;
-      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
     }
 
-    /* ── DIVIDER ── */
+    /* ── DIVIDER LOGO ── */
     .divider {
       position: absolute;
       left: 50%;
@@ -135,36 +182,33 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0;
       pointer-events: none;
     }
 
     .divider-line {
       width: 1px;
-      height: 120px;
-      background: linear-gradient(to bottom, transparent, rgba(184,148,58,0.5), transparent);
+      height: 100px;
+      background: linear-gradient(to bottom, transparent, rgba(184,148,58,0.6), transparent);
     }
 
     .divider-logo {
-      background: var(--cream);
-      border: 1px solid rgba(184,148,58,0.4);
-      padding: 1.25rem 1.75rem;
+      background: rgba(248,244,237,0.92);
+      border: 1px solid rgba(184,148,58,0.45);
+      padding: 1.1rem 1.6rem;
       text-align: center;
+      backdrop-filter: blur(4px);
     }
 
     .divider-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 400;
       color: #1A1610;
       line-height: 1;
       letter-spacing: 0.01em;
     }
 
-    .divider-name em {
-      font-style: italic;
-      color: var(--gold);
-    }
+    .divider-name em { font-style: italic; color: var(--gold); }
 
     .divider-sub {
       font-family: 'Libre Baskerville', serif;
@@ -178,7 +222,7 @@
     /* ── PANEL CONTENT ── */
     .panel-content {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       text-align: center;
       padding: 2rem;
     }
@@ -189,13 +233,12 @@
       letter-spacing: 0.4em;
       text-transform: uppercase;
       margin-bottom: 1.25rem;
-      opacity: 0.7;
+      opacity: 0.8;
       transition: opacity 0.3s;
     }
 
     .panel:hover .panel-eyebrow { opacity: 1; }
-
-    .panel-coffee .panel-eyebrow { color: #C4855A; }
+    .panel-coffee .panel-eyebrow { color: #D4A882; }
     .panel-bar    .panel-eyebrow { color: #B8943A; }
 
     .panel-heading {
@@ -204,16 +247,14 @@
       font-weight: 400;
       line-height: 1.1;
       letter-spacing: -0.01em;
+      /* text-shadow helps legibility over photos */
+      text-shadow: 0 1px 12px rgba(0,0,0,0.18);
     }
 
     .panel-coffee .panel-heading { color: #F2E8DC; }
     .panel-bar    .panel-heading { color: #1A1610; }
 
-    .panel-heading em {
-      display: block;
-      font-style: italic;
-    }
-
+    .panel-heading em { display: block; font-style: italic; }
     .panel-coffee .panel-heading em { color: #C4855A; }
     .panel-bar    .panel-heading em { color: #B8943A; }
 
@@ -231,13 +272,9 @@
       transition: opacity 0.35s 0.05s, transform 0.35s 0.05s;
     }
 
-    .panel:hover .panel-desc {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .panel-coffee .panel-desc { color: rgba(242,232,220,0.75); }
-    .panel-bar    .panel-desc { color: #3D3528; }
+    .panel:hover .panel-desc { opacity: 1; transform: translateY(0); }
+    .panel-coffee .panel-desc { color: rgba(242,232,220,0.82); }
+    .panel-bar    .panel-desc { color: #2C2218; }
 
     .panel-cta {
       display: inline-block;
@@ -253,25 +290,12 @@
       transition: opacity 0.35s 0.1s, transform 0.35s 0.1s, background 0.2s;
     }
 
-    .panel:hover .panel-cta {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .panel:hover .panel-cta { opacity: 1; transform: translateY(0); }
 
-    .panel-coffee .panel-cta {
-      color: #C4855A;
-      border-color: rgba(196,133,90,0.5);
-    }
-    .panel-coffee .panel-cta:hover {
-      background: rgba(196,133,90,0.12);
-    }
-    .panel-bar .panel-cta {
-      color: #B8943A;
-      border-color: rgba(184,148,58,0.5);
-    }
-    .panel-bar .panel-cta:hover {
-      background: rgba(184,148,58,0.1);
-    }
+    .panel-coffee .panel-cta { color: #D4A882; border-color: rgba(212,168,130,0.5); }
+    .panel-coffee .panel-cta:hover { background: rgba(196,133,90,0.15); }
+    .panel-bar    .panel-cta { color: #B8943A; border-color: rgba(184,148,58,0.5); }
+    .panel-bar    .panel-cta:hover { background: rgba(184,148,58,0.12); }
 
     /* ── CORNER LABEL ── */
     .corner-label {
@@ -281,13 +305,39 @@
       font-size: 8.5px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      opacity: 0.35;
+      opacity: 0.4;
       transition: opacity 0.3s;
+      z-index: 3;
     }
 
-    .panel:hover .corner-label { opacity: 0.6; }
-    .panel-coffee .corner-label { color: #C4855A; right: 2.5rem; }
+    .panel:hover .corner-label { opacity: 0.75; }
+    .panel-coffee .corner-label { color: #D4A882; right: 2.5rem; }
     .panel-bar    .corner-label { color: #B8943A; left: 2.5rem; }
+
+    /* ── PHOTO COUNTER ── */
+    .photo-dots {
+      position: fixed;
+      bottom: 1.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    .photo-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(184,148,58,0.35);
+      transition: background 0.4s, transform 0.4s;
+    }
+
+    .photo-dot.active {
+      background: rgba(184,148,58,0.9);
+      transform: scale(1.4);
+    }
 
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
@@ -316,80 +366,133 @@
       .divider { display: none; }
       .panel-desc, .panel-cta { opacity: 1; transform: none; }
       .corner-label { opacity: 0.5; }
+      .slideshow-overlay {
+        background: linear-gradient(
+          to bottom,
+          rgba(28,16,8,0.68) 0%,
+          rgba(28,16,8,0.68) 50%,
+          rgba(248,244,237,0.62) 50%,
+          rgba(248,244,237,0.68) 100%
+        );
+      }
     }
-
-
   </style>
 </head>
 <body>
 
-<div class="slideshow">
-  <img src="photos/photo1.jpeg" alt="Photo 1">
-  <img src="photos/photo2.jpeg" alt="Photo 2">
-  <img src="photos/photo3.jpeg" alt="Photo 3">
-  <img src="photos/photo4.jpeg" alt="Photo 4">
-</div>
-
-<div class="split">
-
-  <!-- COFFEE -->
-  <a class="panel panel-coffee" href="coffee.html">
-    <div class="panel-content">
-      <p class="panel-eyebrow">Gaggia Classic Pro</p>
-      <h2 class="panel-heading">
-        Morning
-        <em>Coffee</em>
-      </h2>
-      <p class="panel-desc">Espresso drinks, pour overs & everything in between</p>
-      <span class="panel-cta">View Menu</span>
-    </div>
-    <span class="corner-label">Coffee Menu</span>
-  </a>
-
-  <!-- DIVIDER LOGO -->
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-logo">
-      <p class="divider-name">Daylight <em>108</em></p>
-      <p class="divider-sub">A private residence</p>
-    </div>
-    <div class="divider-line"></div>
+  <!-- ── SLIDESHOW ──
+       Add or remove <div class="slide"> blocks to change photos.
+       Always put your images in a /photos/ folder next to index.html.
+       Supported formats: .jpg, .jpeg, .png, .webp
+  ── -->
+  <div class="slideshow" id="slideshow">
+    <div class="slide"><img src="photos/photo1.jpeg" alt="Photo 1" /></div>
+    <div class="slide"><img src="photos/photo2.jpeg" alt="Photo 2" /></div>
+    <div class="slide"><img src="photos/photo3.jpeg" alt="Photo 3" /></div>
+    <div class="slide"><img src="photos/photo4.jpeg" alt="Photo 4" /></div>
   </div>
 
-  <!-- BAR -->
-  <a class="panel panel-bar" href="bar.html">
-    <div class="panel-content">
-      <p class="panel-eyebrow">Handcrafted Cocktails</p>
-      <h2 class="panel-heading">
-        Evening
-        <em>Bar</em>
-      </h2>
-      <p class="panel-desc">Cocktails, spirits, beer & wine — made to order</p>
-      <span class="panel-cta">View Menu</span>
-    </div>
-    <span class="corner-label">Bar Menu</span>
-  </a>
+  <!-- Overlay that keeps text readable over any photo -->
+  <div class="slideshow-overlay"></div>
 
-</div>
+  <div class="split">
+
+    <!-- COFFEE -->
+    <a class="panel panel-coffee" href="coffee.html">
+      <div class="panel-content">
+        <p class="panel-eyebrow">Gaggia Classic Pro</p>
+        <h2 class="panel-heading">
+          Morning
+          <em>Coffee</em>
+        </h2>
+        <p class="panel-desc">Espresso drinks, pour overs & everything in between</p>
+        <span class="panel-cta">View Menu</span>
+      </div>
+      <span class="corner-label">Coffee Menu</span>
+    </a>
+
+    <!-- DIVIDER LOGO -->
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-logo">
+        <p class="divider-name">Daylight <em>108</em></p>
+        <p class="divider-sub">A private residence</p>
+      </div>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- BAR -->
+    <a class="panel panel-bar" href="bar.html">
+      <div class="panel-content">
+        <p class="panel-eyebrow">Handcrafted Cocktails</p>
+        <h2 class="panel-heading">
+          Evening
+          <em>Bar</em>
+        </h2>
+        <p class="panel-desc">Cocktails, spirits, beer & wine — made to order</p>
+        <span class="panel-cta">View Menu</span>
+      </div>
+      <span class="corner-label">Bar Menu</span>
+    </a>
+
+  </div>
+
+  <!-- Progress dots -->
+  <div class="photo-dots" id="photo-dots"></div>
 
 <script>
-(function() {
-  const images = document.querySelectorAll('.slideshow img');
-  let currentIndex = 0;
+(function () {
+  const slides    = Array.from(document.querySelectorAll('.slide'));
+  const dotsWrap  = document.getElementById('photo-dots');
+  const INTERVAL  = 9000;   // ms between transitions
+  const FADE_MS   = 1800;   // must match CSS transition duration
+  let current     = 0;
+  let timer;
 
-  function rotatePhoto() {
-    images[currentIndex].classList.remove('active');
-    currentIndex = (currentIndex + 1) % images.length;
-    images[currentIndex].classList.add('active');
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'photo-dot' + (i === 0 ? ' active' : '');
+    dotsWrap.appendChild(d);
+  });
+
+  const dots = Array.from(dotsWrap.querySelectorAll('.photo-dot'));
+
+  function goTo(next) {
+    const prev = current;
+    current = next;
+
+    // Activate new slide (fades in via CSS transition)
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+
+    // After the incoming slide is fully visible, fade out the old one
+    // Small delay ensures both are visible during the crossfade
+    setTimeout(() => {
+      slides[prev].classList.remove('active');
+      dots[prev].classList.remove('active');
+
+      // Reset Ken Burns on outgoing slide so it's ready next cycle:
+      // remove & re-add the img to restart the animation when it comes back
+      const img = slides[prev].querySelector('img');
+      const clone = img.cloneNode(true);
+      slides[prev].replaceChild(clone, img);
+    }, FADE_MS + 200);
   }
 
-  // Start with first image visible
-  if (images.length > 0) {
-    images[0].classList.add('active');
+  function advance() {
+    goTo((current + 1) % slides.length);
   }
 
-  // Rotate every 8 seconds
-  setInterval(rotatePhoto, 8000);
+  // Kick off
+  slides[0].classList.add('active');
+  timer = setInterval(advance, INTERVAL);
+
+  // Pause on hover so people can enjoy a photo
+  document.querySelector('.split').addEventListener('mouseenter', () => clearInterval(timer));
+  document.querySelector('.split').addEventListener('mouseleave', () => {
+    timer = setInterval(advance, INTERVAL);
+  });
 })();
 </script>
 
